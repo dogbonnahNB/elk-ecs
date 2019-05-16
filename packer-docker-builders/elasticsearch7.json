@@ -17,7 +17,15 @@
        "su - elasticsearch",
        "bin/elasticsearch-plugin install discovery-ec2 && bin/elasticsearch-plugin install repository-s3 && sed -e '/^-Xm/s/^/#/g' -i /usr/share/elasticsearch/config/jvm.options "
      ]
-  }
+  },
+
+  "post-processors": [
+    {
+      "type": "docker-tag",
+      "repository": "accenture/elasticsearch",
+      "tag": "accent-7.0.1-0"
+    }
+  ]
 
 
 
