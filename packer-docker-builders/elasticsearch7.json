@@ -15,9 +15,9 @@
     {
       "type": "shell",
       "inline": [
-        "su - root chown elasticsearch:elasticsearch config/elasticsearch.yml",
+        "su - root /bin/chown elasticsearch:elasticsearch config/elasticsearch.yml",
+        "su - elasticsearch",
         "cd /usr/share/elasticsearch",
-        "su - root elasticsearch",
         "bin/elasticsearch-plugin install discovery-ec2 && bin/elasticsearch-plugin install repository-s3 && sed -e '/^-Xm/s/^/#/g' -i /usr/share/elasticsearch/config/jvm.options "
       ]
     }
