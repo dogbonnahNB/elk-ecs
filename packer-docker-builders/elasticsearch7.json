@@ -5,6 +5,7 @@
       "image": "elastic/elasticsearch:7.0.1",
       "commit": true,
       "changes": [
+        "LABEL version=1.0",
         "ENV REGION eu-west-2a"
       ]
     }
