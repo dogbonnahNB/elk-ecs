@@ -6,18 +6,23 @@
       "commit": true,
       "changes": [
         "ENV REGION eu-west-2a",
-        "ADD config/elasticsearch.yml /usr/share/elasticsearch/config/"
       ]
     }
   ],
 
   "provisioners": [
     {
+      "type": "file",
+      "source": "config/elasticsearch.yml",
+      "destination": "/usr/share/elasticsearch/config/"
+    },
+    {
       "type": "shell",
       "inline": [
         "/bin/chown elasticsearch:elasticsearch config/elasticsearch.yml",
         "echo -e 'y\n' | su elasticsearch -c \"/usr/share/elasticsearch/bin/elasticsearch-plugin install discovery-ec2\"",
-        "echo -e 'y\n' | su elasticsearch -c \"/usr/share/elasticsearch/bin/elasticsearch-plugin install repository-s3 && sed -e '/^-Xm/s/^/#/g' -i /usr/share/elasticsearch/config/jvm.options\""
+        "echo -e 'y\n' | su elasticsearch -c \"/usr/share/elasticsearch/bin/elasticsearch-plugin install repository-s3\"",
+        "sed -e '/^-Xm/s/^/#/g' -i /usr/share/elasticsearch/config/jvm.options\""
       ]
     }
   ],
