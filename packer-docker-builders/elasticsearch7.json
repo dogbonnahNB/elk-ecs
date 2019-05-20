@@ -7,7 +7,10 @@
     {
       "type": "docker",
       "image": "elastic/elasticsearch:7.0.1",
-      "commit": true
+      "commit": true,
+      "changes": [
+        "ENV REGION{{var `REGION`}}"
+      ]
     }
   ],
 
