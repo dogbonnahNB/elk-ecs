@@ -5,7 +5,7 @@
       "image": "elastic/elasticsearch:7.0.1",
       "commit": true,
       "changes": [
-        "ENV REGION eu-west-2a",
+        "ENV REGION eu-west-2a"
       ]
     }
   ],
