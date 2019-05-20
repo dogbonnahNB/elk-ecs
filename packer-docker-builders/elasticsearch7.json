@@ -16,7 +16,7 @@
       "type": "shell",
       "inline": [
         "/bin/chown elasticsearch:elasticsearch config/elasticsearch.yml",
-        "su elasticsearch -c \"/usr/share/elasticsearch/bin/elasticsearch-plugin install discovery-ec2 && /usr/share/elasticsearch/bin/elasticsearch-plugin install repository-s3 && sed -e '/^-Xm/s/^/#/g' -i /usr/share/elasticsearch/config/jvm.options\""
+        "echo -e 'y\ny\n' | su elasticsearch -c \"/usr/share/elasticsearch/bin/elasticsearch-plugin install discovery-ec2 && /usr/share/elasticsearch/bin/elasticsearch-plugin install repository-s3 && sed -e '/^-Xm/s/^/#/g' -i /usr/share/elasticsearch/config/jvm.options\""
       ]
     }
   ],
