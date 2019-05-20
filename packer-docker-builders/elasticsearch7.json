@@ -34,9 +34,14 @@
   "post-processors": [
     {
       "type": "docker-tag",
-      "repository": "accenture/elasticsearch",
+      "repository": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/elasticsearch",
       "tag": "accent-7.0.1-0"
-    }
+    },
+    {
+        "type": "docker-push",
+        "ecr_login": true,
+        "login_server": "https://217554036865.dkr.ecr.eu-west-2.amazonaws.com/"
+      }
   ]
 
 }
