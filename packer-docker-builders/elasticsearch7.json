@@ -15,7 +15,7 @@
     {
       "type": "shell",
       "inline": [
-        "sudo su - chown elasticsearch:elasticsearch config/elasticsearch.yml",
+        "su - chown elasticsearch:elasticsearch config/elasticsearch.yml",
         "cd /usr/share/elasticsearch",
         "su - elasticsearch",
         "bin/elasticsearch-plugin install discovery-ec2 && bin/elasticsearch-plugin install repository-s3 && sed -e '/^-Xm/s/^/#/g' -i /usr/share/elasticsearch/config/jvm.options "
@@ -30,5 +30,5 @@
       "tag": "accent-7.0.1-0"
     }
   ]
-  
+
 }
