@@ -19,6 +19,8 @@
         "awslogs-stream-prefix": "fast-ecs"
       }
     },
-    "healthCheck": "curl -fs http://localhost:9200/_cat/health || exit 1"
+    "healthCheck": {
+      "command": ["CMD-SHELL", "curl -fs http://localhost:9200/_cat/health || exit 1"]
+    }
   }
 ]
