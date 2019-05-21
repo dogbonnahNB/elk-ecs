@@ -23,10 +23,14 @@ data "aws_subnet_ids" "ecs_subnets" {
   vpc_id = "${var.vpc_id}"
 }
 
-data "aws_security_group" "selected" {
-  vpc_id = "${data.aws_vpc.ecs_vpc.id}"
-  tags {
-    Name = "ECS_Cluster"
+data "aws_security_groups" "selected" {
+  tags = {
+    Name   = "ECS_Cluster"
+  }
+
+  filter {
+    name   = "vpc-id"
+    values = ["${data.aws_vpc.ecs_vpc.id}"]
   }
 }
 
