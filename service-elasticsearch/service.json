@@ -1,7 +1,7 @@
 [
   {
     "name": "elasticsearch",
-    "image": "accenture/elasticsearch:accent-7.0.1-0",
+    "image": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/elasticsearch:accent-7.0.1-0",
     "memory": 256,
     "interactive": true,
     "portMappings": [
