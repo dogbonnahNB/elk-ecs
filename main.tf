@@ -83,7 +83,7 @@ resource "aws_iam_role_policy_attachment" "ecs_ec2_cloudwatch_role" {
 #----- ECS  Services--------
 
 module "elasticsearch" {
-  source     = "service-elasticsearch"
+  source     = "../service-elasticsearch"
   cluster_id = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
 }
 
