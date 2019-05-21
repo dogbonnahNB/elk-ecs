@@ -1,0 +1,22 @@
+{
+  "name": "elasticsearch",
+  "image": "accenture/elasticsearch:accent-7.0.1-0",
+  "cpu": 10,
+  "memory": 256,
+  "interactive": true,
+  "portMappings": [
+    {
+      "containerPort": 9200,
+      "hostPort": 9200
+    }
+  ],
+  "logConfiguration": {
+    "logDriver": "awslogs",
+    "options": {
+      "awslogs-region": "eu-west-2",
+      "awslogs-group": "elasticsearch",
+      "awslogs-stream-prefix": "fast-ecs"
+    }
+  },
+  "healthCheck": "curl -fs http://localhost:9200/_cat/health || exit 1"
+}
