@@ -5,7 +5,7 @@ resource "aws_cloudwatch_log_group" "elasticsearch" {
 
 resource "aws_ecs_task_definition" "elasticsearch" {
   family = "elasticsearch"
-  container_definitions = "${file("service.json")}"
+  container_definitions = "${file("./service.json")}"
 
   placement_constraints {
     type       = "memberOf"

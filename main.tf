@@ -85,15 +85,16 @@ module "elasticsearch" {
 #----- ECS  Resources--------
 
 data "aws_ami" "amazon_linux_ecs" {
+  owners = "amazon"
   most_recent = true
 
   filter {
     name   = "name"
-    values = ["amzn-ami-*-amazon-ecs-optimized"]
+    values = ["amzn2-ami-ecs-hvm-*-x86_64-ebs"]
   }
 
   filter {
-    name   = "owner-alias"
+    name   = "image_owner_alias"
     values = ["amazon"]
   }
 }
