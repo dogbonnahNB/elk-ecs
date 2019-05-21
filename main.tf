@@ -2,11 +2,6 @@ provider "aws" {
   region = "eu-west-2"
 }
 
-
-provider "template" {
-  version = ">= 1.0.0"
-}
-
 terraform {
   required_version = ">= 0.11.7"
 }
@@ -115,7 +110,7 @@ module "aws_launch_configuration" {
   instance_type        = "${var.instance_type}"
   security_groups      = ["${data.aws_security_group.selected.id}"]
   iam_instance_profile = "${aws_iam_instance_profile.instance_profile.id}"
-  user_data            = "${data.template_file.user_data.rendered}"
+  user_data            = "${file("${path.module}/user-data.sh")}"
 
   # Auto scaling group
   asg_name                  = "${local.ec2_resources_name}"
@@ -138,12 +133,4 @@ module "aws_launch_configuration" {
       propagate_at_launch = true
     },
   ]
-}
-
-data "template_file" "user_data" {
-  template = "${file("${path.module}/user-data.sh")}"
-
-  vars {
-    cluster_name = "${local.name}"
-  }
 }
