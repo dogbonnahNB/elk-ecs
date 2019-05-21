@@ -6,11 +6,6 @@ resource "aws_cloudwatch_log_group" "elasticsearch" {
 resource "aws_ecs_task_definition" "elasticsearch" {
   family = "elasticsearch"
   container_definitions = "${file("service-elasticsearch/service.json")}"
-
-  placement_constraints {
-    type       = "memberOf"
-    expression = "attribute:ecs.availability-zone in [eu-west-2a, eu-west-2b]"
-  }
 }
 
 resource "aws_ecs_service" "elasticsearch" {
