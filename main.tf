@@ -108,7 +108,7 @@ module "aws_launch_configuration" {
 
   image_id             = "${data.aws_ami.amazon_linux_ecs.id}"
   instance_type        = "${var.instance_type}"
-  security_groups      = ["${data.aws_security_group.selected.ids}"]
+  security_groups      = "${data.aws_security_groups.selected.ids}"
   iam_instance_profile = "${aws_iam_instance_profile.instance_profile.id}"
   user_data            = "${file("${path.module}/user-data.sh")}"
 
