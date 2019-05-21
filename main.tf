@@ -80,6 +80,13 @@ resource "aws_iam_role_policy_attachment" "ecs_ec2_cloudwatch_role" {
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
 }
 
+#----- ECS  Services--------
+
+module "elasticsearch" {
+  source     = "service-elasticsearch"
+  cluster_id = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
+}
+
 #----- ECS  Resources--------
 
 data "aws_ami" "amazon_linux_ecs" {
