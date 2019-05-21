@@ -9,7 +9,7 @@ resource "aws_ecs_task_definition" "elasticsearch" {
 
   placement_constraints {
     type       = "memberOf"
-    expression = "attribute:ecs.availability-zone in [us-west-2a, us-west-2b]"
+    expression = "attribute:ecs.availability-zone in [eu-west-2a, eu-west-2b]"
   }
 }
 
