@@ -85,7 +85,7 @@ module "elasticsearch" {
 #----- ECS  Resources--------
 
 data "aws_ami" "amazon_linux_ecs" {
-  owners = "amazon"
+  owners = ["amazon"]
   most_recent = true
 
   filter {
