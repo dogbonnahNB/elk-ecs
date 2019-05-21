@@ -2,7 +2,6 @@
   {
     "name": "elasticsearch",
     "image": "accenture/elasticsearch:accent-7.0.1-0",
-    "cpu": 10,
     "memory": 256,
     "interactive": true,
     "portMappings": [
