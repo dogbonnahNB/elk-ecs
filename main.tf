@@ -41,7 +41,7 @@ resource "aws_ecs_cluster" "cluster" {
   count = "${var.create_ecs ? 1 : 0}"
 
   name = "${var.cluster_name}"
-  tags = "${var.tags}"
+  tags = "${var.cluster_tags}"
 }
 
 
@@ -83,7 +83,7 @@ resource "aws_iam_role_policy_attachment" "ecs_ec2_cloudwatch_role" {
 #----- ECS  Services--------
 
 module "elasticsearch" {
-  source     = "../service-elasticsearch"
+  source     = "./service-elasticsearch"
   cluster_id = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
 }
 
@@ -112,7 +112,7 @@ module "aws_launch_configuration" {
   lc_name = "${local.ec2_resources_name}"
 
   image_id             = "${data.aws_ami.amazon_linux_ecs.id}"
-  instance_type        = "${var.instace_type}"
+  instance_type        = "${var.instance_type}"
   security_groups      = ["${data.aws_security_group.selected.id}"]
   iam_instance_profile = "${aws_iam_instance_profile.instance_profile.id}"
   user_data            = "${data.template_file.user_data.rendered}"
