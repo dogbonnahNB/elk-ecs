@@ -14,7 +14,7 @@ resource "aws_ecs_task_definition" "elasticsearch" {
 }
 
 resource "aws_ecs_service" "elasticsearch" {
-  name            = "hello_world"
+  name            = "elasticsearch"
   cluster         = "${var.cluster_id}"
   task_definition = "${aws_ecs_task_definition.elasticsearch.arn}"
 
