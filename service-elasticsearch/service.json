@@ -5,10 +5,12 @@
     "memory": 2048,
     "interactive": true,
     "essential": true,
-    "mountPoints": {
+    "mountPoints": [
+      {
       "containerPath": "/usr/share/elasticsearch/data",
       "sourceVolume" : "esdata"
-    },
+      }
+    ],
     "portMappings": [
       {
         "containerPort": 9200,
