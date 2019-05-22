@@ -9,7 +9,6 @@ resource "aws_ecs_task_definition" "elasticsearch" {
 
   volume {
     name = "esdata"
-    host_path = "/ecs/elasticsearch"
 
     docker_volume_configuration {
       scope         = "shared"
