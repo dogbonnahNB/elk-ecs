@@ -10,8 +10,8 @@ transport.publish_host: _ec2:privateIp_
 discovery.seed_providers: ec2
 discovery.ec2.any_group: true
 discovery.ec2.tag.es_cluster: “prod1-elasticsearch”
-discovery.ec2.endpoint: ec2.${REGION}.amazonaws.com
-s3.client.default.endpoint: s3.${REGION}.amazonaws.com
+discovery.ec2.endpoint: "ec2.${REGION}.amazonaws.com"
+s3.client.default.endpoint: "s3.${REGION}.amazonaws.com"
 cloud.node.auto_attributes: true
 cluster.routing.allocation.awareness.attributes: aws_availability_zone
 xpack.security.enabled: false
