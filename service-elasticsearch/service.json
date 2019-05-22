@@ -5,6 +5,7 @@
     "memory": 2048,
     "interactive": true,
     "essential": true,
+    "privileged": true,
     "mountPoints": [
       {
       "containerPath": "/usr/share/elasticsearch/data",
@@ -40,6 +41,11 @@
         "name": "nofile",
         "hardLimit": 65536,
         "softLimit": 65536
+      }
+      {
+        "name": "memlock",
+        "hardLimit": -1,
+        "softLimit": -1
       }
     ]
   }
