@@ -2,12 +2,21 @@
   {
     "name": "elasticsearch",
     "image": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/elasticsearch:accent-7.0.1-0",
-    "memory": 512,
+    "memory": 2048,
     "interactive": true,
+    "essential": true,
+    "mountPoints": {
+      "containerPath": "/usr/share/elasticsearch/data",
+      "sourceVolume" : "esdata"
+    },
     "portMappings": [
       {
         "containerPort": 9200,
         "hostPort": 9200
+      },
+      {
+        "containerPort": 9300,
+        "hostPort": 9300
       }
     ],
     "logConfiguration": {
@@ -19,7 +28,14 @@
       }
     },
     "healthCheck": {
-      "command": ["CMD-SHELL", "curl -fs http://localhost:9200/_cat/health || exit 1"]
-    }
+      "command": ["CMD", "curl -fs http://localhost:9200/_cat/health || exit 1"]
+    },
+    "ulimit": [
+      {
+        "name": "nofile",
+        "hardLimit": 65536,
+        "softLimit": 65536
+      }
+    ]
   }
 ]
