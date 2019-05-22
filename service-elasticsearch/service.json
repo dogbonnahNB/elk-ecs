@@ -41,7 +41,7 @@
         "name": "nofile",
         "hardLimit": 65536,
         "softLimit": 65536
-      }
+      },
       {
         "name": "memlock",
         "hardLimit": -1,
