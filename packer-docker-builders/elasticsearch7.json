@@ -8,7 +8,15 @@
     {
       "type": "docker",
       "image": "elastic/elasticsearch:7.0.1",
-      "commit": true
+      "commit": true,
+      "changes": [
+        "ENV REGION {{user `REGION`}}",
+        "ENV ES_JAVA_OPTS {{user `ES_JAVA_OPTS`}}",
+        "EXPOSE 9200 9300",
+        "WORKDIR /usr/share/elasticsearch"
+        "ENTRYPOINT /usr/local/bin/docker-entrypoint.sh".
+        "CMD eswrapper;"
+      ]
     }
   ],
 
@@ -23,7 +31,8 @@
       "inline": [
         "/bin/chown elasticsearch:elasticsearch config/elasticsearch.yml",
         "echo -e 'y\n' | su elasticsearch -c \"/usr/share/elasticsearch/bin/elasticsearch-plugin install discovery-ec2\"",
-        "echo -e 'y\n' | su elasticsearch -c \"/usr/share/elasticsearch/bin/elasticsearch-plugin install repository-s3\""
+        "echo -e 'y\n' | su elasticsearch -c \"/usr/share/elasticsearch/bin/elasticsearch-plugin install repository-s3\"",
+        "sed -e '/^-Xm/s/^/#/g' -i /usr/share/elasticsearch/config/jvm.options"
       ]
     }
   ],
