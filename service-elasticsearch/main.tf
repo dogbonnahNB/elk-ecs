@@ -15,16 +15,6 @@ resource "aws_ecs_task_definition" "elasticsearch" {
       autoprovision = true
     }
   }
-
-  placement_constraints {
-    type       = "memberOf"
-    expression = "attribute:ecs.availability-zone in [eu-west-2a, eu-west-2b, eu-west-2c]"
-  }
-
-  placement_constraints {
-    type       = "memberOf"
-    expression = "attribute:ecs.instance-type =~ t2.*"
-  }
 }
 
 resource "aws_ecs_service" "elasticsearch" {
