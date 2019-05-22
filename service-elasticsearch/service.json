@@ -1,7 +1,7 @@
 [
   {
     "name": "elasticsearch",
-    "image": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/elasticsearch:accent-7.0.1-1",
+    "image": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/elasticsearch:accent-7.1.0-0",
     "memory": 2048,
     "interactive": true,
     "essential": true,

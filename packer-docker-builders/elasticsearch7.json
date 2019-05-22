@@ -7,7 +7,7 @@
   "builders": [
     {
       "type": "docker",
-      "image": "elastic/elasticsearch:7.0.1",
+      "image": "elastic/elasticsearch:7.1.0",
       "commit": true,
       "changes": [
         "ENV REGION {{user `REGION`}}",
@@ -42,7 +42,7 @@
       {
         "type": "docker-tag",
         "repository": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/elasticsearch",
-        "tag": "accent-7.0.1-1"
+        "tag": "accent-7.1.0-0"
       },
       {
         "type": "docker-push",
