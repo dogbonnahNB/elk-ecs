@@ -13,8 +13,8 @@
         "ENV REGION {{user `REGION`}}",
         "ENV ES_JAVA_OPTS {{user `ES_JAVA_OPTS`}}",
         "EXPOSE 9200 9300",
-        "WORKDIR /usr/share/elasticsearch"
-        "ENTRYPOINT /usr/local/bin/docker-entrypoint.sh".
+        "WORKDIR /usr/share/elasticsearch",
+        "ENTRYPOINT /usr/local/bin/docker-entrypoint.sh",
         "CMD eswrapper;"
       ]
     }
