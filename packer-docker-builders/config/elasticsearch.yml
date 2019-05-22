@@ -1,17 +1,23 @@
 #Elasticsearch config file
 
-node.name: _ec2:privateIp_
 cluster.name: "fast-cluster"
-bootstrap.memory_lock: true
+bootstrap.memory_lock: false
 network.bind_host: 0.0.0.0
 network.publish_host: _ec2:privateIp_
 transport.bind_host: 0.0.0.0
 transport.publish_host: _ec2:privateIp_
 discovery.seed_providers: ec2
-discovery.ec2.any_group: true
-discovery.ec2.tag.es_cluster: “prod1-elasticsearch”
-discovery.ec2.endpoint: "ec2.eu-west-2.amazonaws.com"
+discovery:
+  ec2:
+    any_group: true
+    tag.es_cluster: “prod1-elasticsearch”
+    endpoint: "ec2.eu-west-2.amazonaws.com"
+    host_type: "private_ip"
 s3.client.default.endpoint: "s3.eu-west-2.amazonaws.com"
 cloud.node.auto_attributes: true
 cluster.routing.allocation.awareness.attributes: aws_availability_zone
 xpack.security.enabled: false
+xpack.monitoring.enabled: true
+xpack.ml.enabled: false
+xpack.graph.enabled: false
+xpack.watcher.enabled: false
