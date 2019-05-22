@@ -43,40 +43,9 @@ resource "aws_ecs_cluster" "cluster" {
   tags = "${var.cluster_tags}"
 }
 
-
-resource "aws_iam_role" "iam_role" {
-  name = "${var.policy_name}_ecs_instance_role"
-  path = "/ecs/"
-
-  assume_role_policy = <<EOF
-{
-  "Version": "2008-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": ["ec2.amazonaws.com"]
-      },
-      "Effect": "Allow"
-    }
-  ]
-}
-EOF
-}
-
-resource "aws_iam_instance_profile" "instance_profile" {
-  name = "${var.policy_name}_ecs_instance_profile"
-  role = "${aws_iam_role.iam_role.name}"
-}
-
-resource "aws_iam_role_policy_attachment" "ecs_ec2_role" {
-  role       = "${aws_iam_role.iam_role.id}"
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
-}
-
-resource "aws_iam_role_policy_attachment" "ecs_ec2_cloudwatch_role" {
-  role       = "${aws_iam_role.iam_role.id}"
-  policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+module "ecs-instance-policy" {
+  source      = "./ecs-instance-policy"
+  policy_name = "${var.policy_name}"
 }
 
 #----- ECS  Services--------
@@ -116,9 +85,9 @@ module "aws_launch_configuration" {
   asg_name                  = "${local.ec2_resources_name}"
   vpc_zone_identifier       = "${data.aws_subnet_ids.ecs_subnets.ids}"
   health_check_type         = "EC2"
-  min_size                  = 0
-  max_size                  = 4
-  desired_capacity          = 2
+  min_size                  = 1
+  max_size                  = 3
+  desired_capacity          = 3
   wait_for_capacity_timeout = 0
 
   tags = [
