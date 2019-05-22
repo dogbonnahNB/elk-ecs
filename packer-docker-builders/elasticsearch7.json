@@ -1,6 +1,7 @@
 {
   "variables": {
-    "REGION": "eu-west-2"
+    "REGION": "eu-west-2",
+     "ES_JAVA_OPTS": "-Xmx1g -Xms1g"
   },
 
   "builders": [
@@ -10,6 +11,7 @@
       "commit": true,
       "changes": [
         "ENV REGION {{user `REGION`}}"
+        "ENV ES_JAVA_OPTS {{user `ES_JAVA_OPTS`}}"
       ]
     }
   ],
@@ -27,6 +29,7 @@
         "echo -e 'y\n' | su elasticsearch -c \"/usr/share/elasticsearch/bin/elasticsearch-plugin install discovery-ec2\"",
         "echo -e 'y\n' | su elasticsearch -c \"/usr/share/elasticsearch/bin/elasticsearch-plugin install repository-s3\"",
         "sed -e '/^-Xm/s/^/#/g' -i /usr/share/elasticsearch/config/jvm.options"
+        "sysctl -w vm.max_map_count=262144"
       ]
     }
   ],

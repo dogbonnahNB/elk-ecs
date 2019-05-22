@@ -1,13 +1,15 @@
 #Elasticsearch config file
 
-cluster.name: "elasticsearch"
+cluster.name: "fast-cluster"
 bootstrap.memory_lock: false
 network.host: 0.0.0.0
 network.publish_host: _ec2:privateIp_
-transport.publish_host: _ec2:privateIp_
-discovery.zen.hosts_provider: ec2
-discovery.ec2.tag.ElasticSearch: nonprod
+transport.host: _ec2:privateIp_
+discovery.seed_providers: ec2
+discovery.ec2.any_group: true
+discovery.ec2.tag.es_cluster: “prod1-elasticsearch”
 discovery.ec2.endpoint: ec2.eu-west-2.amazonaws.com
+discovery.zen.ping.multicast.enabled: false
 s3.client.default.endpoint: s3.eu-west-2.amazonaws.com
 cloud.node.auto_attributes: true
 cluster.routing.allocation.awareness.attributes: aws_availability_zone
