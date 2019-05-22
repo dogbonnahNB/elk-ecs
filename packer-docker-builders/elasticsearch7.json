@@ -10,7 +10,7 @@
       "image": "elastic/elasticsearch:7.0.1",
       "commit": true,
       "changes": [
-        "ENV REGION {{user `REGION`}}"
+        "ENV REGION {{user `REGION`}}",
         "ENV ES_JAVA_OPTS {{user `ES_JAVA_OPTS`}}"
       ]
     }
