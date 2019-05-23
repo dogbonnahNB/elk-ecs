@@ -33,7 +33,7 @@
         "su elasticsearch -c \"/usr/share/elasticsearch/bin/elasticsearch-plugin install discovery-ec2 -b\"",
         "su elasticsearch -c \"/usr/share/elasticsearch/bin/elasticsearch-plugin install repository-s3 -b\"",
         "sed -e '/^-Xm/s/^/#/g' -i /usr/share/elasticsearch/config/jvm.options",
-        "ulimit -n 65535"
+        "ulimit -n 65535",
         "ulimit -l unlimited"
       ]
     }
