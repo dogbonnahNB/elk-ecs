@@ -1,7 +1,7 @@
 #Elasticsearch config file
 
 cluster.name: "fast-cluster"
-bootstrap.memory_lock: false
+bootstrap.memory_lock: true
 network.bind_host: 0.0.0.0
 network.publish_host: _ec2:privateIp_
 transport.bind_host: 0.0.0.0
