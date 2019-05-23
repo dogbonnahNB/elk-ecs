@@ -12,7 +12,7 @@ cluster.name: "fast-cluster"
 bootstrap.memory_lock: true
 network.bind_host: 0.0.0.0
 network.publish_host: _ec2:privateIp_
-transport.bind_host: 0.0.0.0
+#transport.bind_host: 0.0.0.0
 transport.publish_host: _ec2:privateIp_
 discovery.seed_providers: ec2
 discovery:
