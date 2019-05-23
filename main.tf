@@ -80,6 +80,7 @@ module "aws_launch_configuration" {
   security_groups      = "${data.aws_security_groups.selected.ids}"
   iam_instance_profile = "${module.ecs-instance-policy.iam_instance_profile_id}"
   user_data            = "${file("${path.module}/user-data.sh")}"
+  key_name             = "${var.key_name}"
 
   # Auto scaling group
   asg_name                  = "${local.ec2_resources_name}"
