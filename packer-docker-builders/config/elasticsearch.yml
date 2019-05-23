@@ -1,5 +1,13 @@
 #Elasticsearch config file
 
+node.master: true
+node.data: true
+node.ingest: true
+node.ml: true
+xpack.ml.enabled: true
+
+cluster.remote.connect: false
+
 cluster.name: "fast-cluster"
 bootstrap.memory_lock: true
 network.bind_host: 0.0.0.0
@@ -13,7 +21,6 @@ discovery:
     tag.Environment: production
     tag.Cluster: es_cluster
     endpoint: ec2.eu-west-2.amazonaws.com
-    availability_zones: eu-west-2a
 
 #s3.client.default.endpoint: s3.eu-west-2.amazonaws.com
 cloud.node.auto_attributes: true
