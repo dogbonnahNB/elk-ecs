@@ -32,7 +32,9 @@
         "/bin/chown elasticsearch:elasticsearch config/elasticsearch.yml",
         "echo -e 'y\n' | su elasticsearch -c \"/usr/share/elasticsearch/bin/elasticsearch-plugin install discovery-ec2\"",
         "echo -e 'y\n' | su elasticsearch -c \"/usr/share/elasticsearch/bin/elasticsearch-plugin install repository-s3\"",
-        "sed -e '/^-Xm/s/^/#/g' -i /usr/share/elasticsearch/config/jvm.options"
+        "sed -e '/^-Xm/s/^/#/g' -i /usr/share/elasticsearch/config/jvm.options",
+        "ulimit -n 65535"
+        "ulimit -l unlimited"
       ]
     }
   ],
