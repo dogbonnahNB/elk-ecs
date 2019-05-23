@@ -2,10 +2,9 @@
   {
     "name": "elasticsearch",
     "image": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/elasticsearch:latest",
-    "memory": 2048,
+    "memory": 1024,
     "interactive": true,
     "essential": true,
-    "privileged": true,
     "mountPoints": [
       {
       "containerPath": "/usr/share/elasticsearch/data",
