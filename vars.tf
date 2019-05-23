@@ -27,3 +27,8 @@ variable "vpc_id" {
   description = "The ID of the selected precreated VPC"
   default     = "vpc-a060e9c9"
 }
+
+variable "key_name" {
+  description = "The name of the key to access autoscaling group instances"
+  default     = "accentKey"
+}
