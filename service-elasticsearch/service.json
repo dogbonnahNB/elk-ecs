@@ -1,0 +1,52 @@
+[
+  {
+    "name": "elasticsearch",
+    "image": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/elasticsearch:latest",
+    "memory": 2048,
+    "interactive": true,
+    "essential": true,
+    "privileged": true,
+    "mountPoints": [
+      {
+      "containerPath": "/usr/share/elasticsearch/data",
+      "sourceVolume" : "esdata"
+      }
+    ],
+    "portMappings": [
+      {
+        "containerPort": 9200,
+        "hostPort": 9200
+      },
+      {
+        "containerPort": 9300,
+        "hostPort": 9300
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-region": "eu-west-2",
+        "awslogs-group": "elasticsearch",
+        "awslogs-stream-prefix": "fast-ecs"
+      }
+    },
+    "healthCheck": {
+      "command": ["CMD-SHELL ", "curl -XGET http://localhost:9200/_cat/health || exit 1"],
+      "interval": 60,
+      "retries": 4,
+      "timeout": 10
+    },
+    "ulimits": [
+      {
+        "name": "nofile",
+        "hardLimit": 65536,
+        "softLimit": 65536
+      },
+      {
+        "name": "memlock",
+        "hardLimit": -1,
+        "softLimit": -1
+      }
+    ]
+  }
+]

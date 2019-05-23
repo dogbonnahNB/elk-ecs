@@ -1,32 +1,60 @@
 {
-  "builders": {
-    "type": "docker",
-    "image": "elastic/elasticsearch:7.0.1",
-    "commit": true,
-    "changes": [
-      "ENV REGION eu-west-2a",
-      "ADD config/elasticsearch.yml /usr/share/elasticsearch/config/"
-    ]
+  "variables": {
+    "REGION": "eu-west-2",
+    "ES_JAVA_OPTS": "-Xmx1g -Xms1g"
   },
 
-  "provisioner": {
-    "type": "shell",
-     "inline": [
-       "sudo su - chown elasticsearch:elasticsearch config/elasticsearch.yml",
-       "cd /usr/share/elasticsearch",
-       "su - elasticsearch",
-       "bin/elasticsearch-plugin install discovery-ec2 && bin/elasticsearch-plugin install repository-s3 && sed -e '/^-Xm/s/^/#/g' -i /usr/share/elasticsearch/config/jvm.options "
-     ]
-  },
+  "builders": [
+    {
+      "type": "docker",
+      "image": "elastic/elasticsearch:7.1.0",
+      "commit": true,
+      "changes": [
+        "ENV REGION {{user `REGION`}}",
+        "ENV ES_JAVA_OPTS {{user `ES_JAVA_OPTS`}}",
+        "EXPOSE 9200 9300",
+        "WORKDIR /usr/share/elasticsearch",
+        "ENTRYPOINT /usr/local/bin/docker-entrypoint.sh",
+        "CMD eswrapper"
+      ]
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "config/elasticsearch.yml",
+      "destination": "/usr/share/elasticsearch/config/elasticsearch.yml"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "/bin/chown elasticsearch:elasticsearch config/elasticsearch.yml",
+        "su elasticsearch -c \"/usr/share/elasticsearch/bin/elasticsearch-plugin install discovery-ec2 -b\"",
+        "su elasticsearch -c \"/usr/share/elasticsearch/bin/elasticsearch-plugin install repository-s3 -b\"",
+        "sed -e '/^-Xm/s/^/#/g' -i /usr/share/elasticsearch/config/jvm.options"
+      ]
+    }
+  ],
 
   "post-processors": [
-    {
-      "type": "docker-tag",
-      "repository": "accenture/elasticsearch",
-      "tag": "accent-7.0.1-0"
-    }
+    [
+      {
+        "type": "docker-tag",
+        "repository": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/elasticsearch",
+        "tag": "accent-7.1.0-0"
+      },
+      {
+        "type": "docker-tag",
+        "repository": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/elasticsearch",
+        "tag": "latest"
+      },
+      {
+        "type": "docker-push",
+        "ecr_login": true,
+        "login_server": "https://217554036865.dkr.ecr.eu-west-2.amazonaws.com/"
+      }
+    ]
   ]
-
-
 
 }
