@@ -2,7 +2,7 @@
   {
     "name": "elasticsearch",
     "image": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/elasticsearch:latest",
-    "memory": 1024,
+    "memory": 2048,
     "interactive": true,
     "essential": true,
     "mountPoints": [
