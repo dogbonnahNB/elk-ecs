@@ -11,13 +11,13 @@ discovery:
   ec2:
     any_group: true
     tag.es_cluster: “prod1-elasticsearch”
-    endpoint: "ec2.eu-west-2.amazonaws.com"
-    host_type: "private_ip"
-s3.client.default.endpoint: "s3.eu-west-2.amazonaws.com"
+    endpoint: ec2.eu-west-2.amazonaws.com
+    host_type: private_ip
+#s3.client.default.endpoint: s3.eu-west-2.amazonaws.com
 cloud.node.auto_attributes: true
 cluster.routing.allocation.awareness.attributes: aws_availability_zone
-xpack.security.enabled: false
-xpack.monitoring.enabled: true
-xpack.ml.enabled: false
-xpack.graph.enabled: false
-xpack.watcher.enabled: false
+#xpack.security.enabled: false
+#xpack.monitoring.enabled: true
+#xpack.ml.enabled: false
+#xpack.graph.enabled: false
+#xpack.watcher.enabled: false
