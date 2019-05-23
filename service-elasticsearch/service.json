@@ -5,6 +5,7 @@
     "memory": 2048,
     "interactive": true,
     "essential": true,
+    "privileged": true,
     "mountPoints": [
       {
       "containerPath": "/usr/share/elasticsearch/data",
