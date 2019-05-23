@@ -14,6 +14,9 @@ network.bind_host: 0.0.0.0
 network.publish_host: _ec2:privateIp_
 #transport.bind_host: 0.0.0.0
 transport.publish_host: _ec2:privateIp_
+
+discovery.type: single-node
+
 discovery.seed_providers: ec2
 discovery:
   ec2:
