@@ -42,7 +42,7 @@
       {
         "type": "docker-tag",
         "repository": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/elasticsearch",
-        "tag": "accent-7.1.0-1"
+        "tag": "accent-7.1.0-2"
       },
       {
         "type": "docker-tag",

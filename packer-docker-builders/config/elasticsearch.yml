@@ -9,7 +9,7 @@ xpack.ml.enabled: true
 cluster.remote.connect: false
 
 cluster.name: "fast-cluster"
-bootstrap.memory_lock: false
+bootstrap.memory_lock: true
 network.bind_host: 0.0.0.0
 network.publish_host: _ec2:privateIp_
 transport.bind_host: 0.0.0.0
@@ -22,7 +22,7 @@ discovery:
     tag.Environment: "production"
     tag.Cluster: "ecs-cluster"
     endpoint: ec2.eu-west-2.amazonaws.com
-    availability_zones: eu-west-2a
+    availability_zones: eu-west-2a, eu-west-2b, eu-west-2c
 
 cloud.node.auto_attributes: true
 cluster.routing.allocation.awareness.attributes: aws_availability_zone
