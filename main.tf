@@ -84,7 +84,7 @@ module "aws_launch_configuration" {
 
   # Auto scaling group
   asg_name                  = "${local.ec2_resources_name}"
-  vpc_zone_identifier       = "${data.aws_subnet_ids.ecs_subnets.ids}"
+  vpc_zone_identifier       = ["${data.aws_subnet_ids.ecs_subnets.ids[0]}"]
   health_check_type         = "EC2"
   min_size                  = 1
   max_size                  = 3
