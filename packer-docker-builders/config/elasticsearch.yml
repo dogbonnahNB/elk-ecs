@@ -18,11 +18,12 @@ discovery.seed_providers: ec2
 discovery:
   ec2:
     any_group: true
+    host_type: private_ip
     tag.Environment: production
     tag.Cluster: es_cluster
     endpoint: ec2.eu-west-2.amazonaws.com
+    availability_zones: eu-west-2c,eu-west-2b,eu-west-2a
 
-#s3.client.default.endpoint: s3.eu-west-2.amazonaws.com
 cloud.node.auto_attributes: true
 cluster.routing.allocation.awareness.attributes: aws_availability_zone
 #xpack.security.enabled: false
