@@ -25,7 +25,7 @@ variable "policy_name" {
 
 variable "vpc_id" {
   description = "The ID of the selected precreated VPC"
-  default     = "vpc-a060e9c9"
+  default     = "vpc-0116e9499d2eadf31"
 }
 
 variable "key_name" {
