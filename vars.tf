@@ -5,7 +5,7 @@ variable "create_ecs" {
 
 variable "cluster_name" {
   description = "Name to be used on all the resources as identifier, also the name of the ECS cluster"
-  default = "fast-cluster"
+  default = "ecs-cluster"
 }
 
 variable "cluster_tags" {
@@ -20,7 +20,7 @@ variable "instance_type" {
 
 variable "policy_name" {
   description = "Name to be used on all the resources as identifier"
-  default = "fast-instance-policy"
+  default = "ecs-instance-policy"
 }
 
 variable "vpc_id" {
