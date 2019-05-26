@@ -8,18 +8,10 @@ xpack.ml.enabled: true
 
 cluster.remote.connect: false
 
-#cluster.initial_master_nodes:
-#  - 10.10.200.4
-#  - 10.10.200.5
-#  - 10.10.200.6
-#  - 10.10.200.7
-#  - 10.10.200.8
-#  - 10.10.200.9
-#  - 10.10.200.10
-#  - 10.10.200.11
-#  - 10.10.200.12
-#  - 10.10.200.13
-#  - 10.10.200.14
+cluster.initial_master_nodes:
+  - 10.10.200.4
+  - 10.10.210.12
+  - 10.10.220.4
 
 cluster.name: fast-cluster
 bootstrap.memory_lock: true
