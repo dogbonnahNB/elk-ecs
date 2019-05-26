@@ -8,19 +8,20 @@ xpack.ml.enabled: true
 
 cluster.remote.connect: false
 
-cluster.initial_master_nodes:
-  - 10.10.200.4
-  - 10.10.200.5
-  - 10.10.200.6
-  - 10.10.200.7
-  - 10.10.200.8
-  - 10.10.200.9
-  - 10.10.200.10
-  - 10.10.200.11
-  - 10.10.200.12
-  - 10.10.200.13
-  - 10.10.200.14
-cluster.name: "fast-cluster"
+#cluster.initial_master_nodes:
+#  - 10.10.200.4
+#  - 10.10.200.5
+#  - 10.10.200.6
+#  - 10.10.200.7
+#  - 10.10.200.8
+#  - 10.10.200.9
+#  - 10.10.200.10
+#  - 10.10.200.11
+#  - 10.10.200.12
+#  - 10.10.200.13
+#  - 10.10.200.14
+
+cluster.name: fast-cluster
 bootstrap.memory_lock: true
 network.bind_host: 0.0.0.0
 network.publish_host: _ec2:privateIp_
@@ -31,10 +32,13 @@ discovery.seed_providers: ec2
 discovery:
   ec2:
     host_type: private_ip
-    tag.Environment: "production"
-    tag.Cluster: "ecs-cluster"
+    tag.Environment: production
+    tag.Cluster: ecs-cluster
     endpoint: ec2.eu-west-2.amazonaws.com
-    availability_zones: eu-west-2a
+    availability_zones:
+      - eu-west-2a
+      - eu-west-2b
+      - eu-west-2c
 
 cloud.node.auto_attributes: true
 cluster.routing.allocation.awareness.attributes: aws_availability_zone
