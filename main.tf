@@ -94,7 +94,6 @@ data "aws_ami" "amazon_linux_ecs" {
 resource "aws_instance" "ecs-cluster-elasticsearch-2a" {
   ami                  = "${data.aws_ami.amazon_linux_ecs.id}"
   private_ip           = "10.10.200.4"
-  image_id             = "${data.aws_ami.amazon_linux_ecs.id}"
   instance_type        = "${var.instance_type}"
   security_groups      = "${data.aws_security_groups.selected.ids}"
   iam_instance_profile = "${module.ecs-instance-policy.iam_instance_profile_id}"
@@ -111,7 +110,6 @@ resource "aws_instance" "ecs-cluster-elasticsearch-2a" {
 resource "aws_instance" "ecs-cluster-elasticsearch-2b" {
   ami                  = "${data.aws_ami.amazon_linux_ecs.id}"
   private_ip           = "10.10.210.4"
-  image_id             = "${data.aws_ami.amazon_linux_ecs.id}"
   instance_type        = "${var.instance_type}"
   security_groups      = "${data.aws_security_groups.selected.ids}"
   iam_instance_profile = "${module.ecs-instance-policy.iam_instance_profile_id}"
@@ -128,7 +126,6 @@ resource "aws_instance" "ecs-cluster-elasticsearch-2b" {
 resource "aws_instance" "ecs-cluster-elasticsearch-2c" {
   ami                  = "${data.aws_ami.amazon_linux_ecs.id}"
   private_ip           = "10.10.220.4"
-  image_id             = "${data.aws_ami.amazon_linux_ecs.id}"
   instance_type        = "${var.instance_type}"
   security_groups      = "${data.aws_security_groups.selected.ids}"
   iam_instance_profile = "${module.ecs-instance-policy.iam_instance_profile_id}"
