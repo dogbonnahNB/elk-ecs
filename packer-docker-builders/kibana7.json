@@ -1,0 +1,59 @@
+{
+  "variables": {
+    "REGION": "eu-west-2",
+  },
+
+  "builders": [
+    {
+      "type": "docker",
+      "image": "elastic/kibana:7.1.0",
+      "commit": true,
+      "changes": [
+        "ENV REGION {{user `REGION`}}",
+        "EXPOSE 5601",
+        "WORKDIR /usr/share/kibana",
+        "CMD /usr/local/bin/kibana-docker"
+      ]
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "config/kibana.yml",
+      "destination": "/usr/share/kibana/config/kibana.yml"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "/bin/chown kibana:kibana config/kibana.yml"
+      ]
+    }
+  ],
+
+  "post-processors": [
+    [
+      {
+        "type": "docker-tag",
+        "repository": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/kibana",
+        "tag": "accent-7.1.0-0"
+      },
+      {
+        "type": "docker-push",
+        "ecr_login": true,
+        "login_server": "https://217554036865.dkr.ecr.eu-west-2.amazonaws.com/"
+      },
+      {
+        "type": "docker-tag",
+        "repository": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/kibana",
+        "tag": "latest"
+      },
+      {
+        "type": "docker-push",
+        "ecr_login": true,
+        "login_server": "https://217554036865.dkr.ecr.eu-west-2.amazonaws.com/"
+      }
+    ]
+  ]
+
+}

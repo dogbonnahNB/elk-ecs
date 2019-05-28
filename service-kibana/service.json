@@ -1,0 +1,32 @@
+[
+  {
+    "name": "kibana",
+    "image": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/kibana:latest",
+    "memory": 1024,
+    "interactive": true,
+    "portMappings": [
+      {
+        "containerPort": 5601,
+        "hostPort": 5601
+      },
+      {
+        "containerPort": 5601,
+        "hostPort": 5601
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-region": "eu-west-2",
+        "awslogs-group": "kibana",
+        "awslogs-stream-prefix": "fast-ecs"
+      }
+    },
+    "healthCheck": {
+      "command": ["CMD", "curl -fs http://localhost:5601"],
+      "interval": 180,
+      "retries": 4,
+      "timeout": 10
+    },
+  }
+]

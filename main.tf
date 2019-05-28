@@ -7,7 +7,7 @@ terraform {
 }
 
 locals {
-  name        = "ecs-cluster"
+  name        = "elk-cluster"
   environment = "production"
 
   # This is the convention we use to know what belongs to each other
@@ -76,6 +76,10 @@ module "elasticsearch" {
   cluster_id = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
 }
 
+module "kibana" {
+  source     = "./service-kibana"
+  cluster_id = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
+}
 #----- ECS  Resources--------
 
 data "aws_ami" "amazon_linux_ecs" {

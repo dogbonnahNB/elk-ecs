@@ -31,7 +31,7 @@
       }
     },
     "healthCheck": {
-      "command": ["CMD", "curl -XGET http://localhost:9200/_cat/health"],
+      "command": ["CMD", "curl -f http://localhost:9200/_cat/health"],
       "interval": 180,
       "retries": 4,
       "timeout": 10

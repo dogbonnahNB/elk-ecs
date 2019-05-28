@@ -5,7 +5,7 @@ variable "create_ecs" {
 
 variable "cluster_name" {
   description = "Name to be used on all the resources as identifier, also the name of the ECS cluster"
-  default = "ecs-cluster"
+  default = "elk-cluster"
 }
 
 variable "cluster_tags" {

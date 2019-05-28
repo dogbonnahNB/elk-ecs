@@ -25,7 +25,7 @@ discovery:
   ec2:
     host_type: private_ip
     tag.Environment: production
-    tag.Cluster: ecs-cluster
+    tag.Cluster: elk-cluster
     endpoint: ec2.eu-west-2.amazonaws.com
     availability_zones: eu-west-2a,eu-west-2b,eu-west-2c
 
