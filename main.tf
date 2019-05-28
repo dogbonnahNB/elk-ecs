@@ -23,7 +23,7 @@ data "aws_subnet_ids" "ecs_subnets" {
   vpc_id = "${var.vpc_id}"
 }
 
-data "aws_subnet_id" "ecs_subnet_2A" {
+data "aws_subnet" "ecs_subnet_2A" {
   vpc_id     = "${var.vpc_id}"
   cidr_block = "10.10.200.0/28"
   tags = {
@@ -31,7 +31,7 @@ data "aws_subnet_id" "ecs_subnet_2A" {
   }
 }
 
-data "aws_subnet_id" "ecs_subnet_2B" {
+data "aws_subnet" "ecs_subnet_2B" {
   vpc_id     = "${var.vpc_id}"
   cidr_block = "10.10.210.0/28"
   tags = {
@@ -39,7 +39,7 @@ data "aws_subnet_id" "ecs_subnet_2B" {
   }
 }
 
-data "aws_subnet_id" "ecs_subnet_2C" {
+data "aws_subnet" "ecs_subnet_2C" {
   vpc_id     = "${var.vpc_id}"
   cidr_block = "10.10.220.0/28"
   tags = {
