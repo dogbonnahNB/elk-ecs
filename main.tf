@@ -23,6 +23,30 @@ data "aws_subnet_ids" "ecs_subnets" {
   vpc_id = "${var.vpc_id}"
 }
 
+data "aws_subnet_ids" "ecs_subnet_2A" {
+  vpc_id = "${var.vpc_id}"
+
+  tags = {
+    Name = "ELK_Stack_2A"
+  }
+}
+
+data "aws_subnet_ids" "ecs_subnet_2B" {
+  vpc_id = "${var.vpc_id}"
+
+  tags = {
+    Name = "ELK_Stack_2B"
+  }
+}
+
+data "aws_subnet_ids" "ecs_subnet_2C" {
+  vpc_id = "${var.vpc_id}"
+
+  tags = {
+    Name = "ELK_Stack_2C"
+  }
+}
+
 data "aws_security_groups" "selected" {
   tags = {
     Name   = "ECS_Cluster"
@@ -65,6 +89,24 @@ data "aws_ami" "amazon_linux_ecs" {
     name   = "name"
     values = ["amzn2-ami-ecs-hvm-*-x86_64-ebs"]
   }
+}
+
+resource "aws_network_interface" "ec2-az-2a-master" {
+  subnet_id       = "${aws_subnet.public_a.id}"
+  private_ips     = ["10.10.200.4"]
+  security_groups = "${data.aws_security_groups.selected.ids}"
+}
+
+resource "aws_network_interface" "ec2-az-2b-master" {
+  subnet_id       = "${aws_subnet.public_a.id}"
+  private_ips     = ["10.10.210.4"]
+  security_groups = "${data.aws_security_groups.selected.ids}"
+}
+
+resource "aws_network_interface" "ec2-az-2b-master" {
+  subnet_id       = "${aws_subnet.public_a.id}"
+  private_ips     = ["10.10.220.4"]
+  security_groups = "${data.aws_security_groups.selected.ids}"
 }
 
 module "aws_launch_configuration" {
