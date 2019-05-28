@@ -99,7 +99,7 @@ resource "aws_instance" "ecs-cluster-elasticsearch-2a" {
   instance_type          = "${var.instance_type}"
   vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
   iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
-  user_data              = "${file("${path.module}/user-data.sh")}"
+  user_data              = "${file("${path.module}/user-data-elasticsearch.sh")}"
   key_name               = "${var.key_name}"
 
   tags = {
@@ -116,7 +116,7 @@ resource "aws_instance" "ecs-cluster-elasticsearch-2b" {
   instance_type          = "${var.instance_type}"
   vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
   iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
-  user_data              = "${file("${path.module}/user-data.sh")}"
+  user_data              = "${file("${path.module}/user-data-elasticsearch.sh")}"
   key_name               = "${var.key_name}"
 
   tags = {
@@ -133,7 +133,7 @@ resource "aws_instance" "ecs-cluster-elasticsearch-2c" {
   instance_type          = "${var.instance_type}"
   vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
   iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
-  user_data              = "${file("${path.module}/user-data.sh")}"
+  user_data              = "${file("${path.module}/user-data-elasticsearch.sh")}"
   key_name               = "${var.key_name}"
 
   tags = {
