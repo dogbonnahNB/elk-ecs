@@ -12,6 +12,8 @@
         "ENV REGION {{user `REGION`}}",
         "EXPOSE 5601",
         "WORKDIR /usr/share/kibana",
+        "ENTRYPOINT [\"\"]",
+        "CMD /usr/local/bin/kibana-docker"
       ]
     }
   ],
