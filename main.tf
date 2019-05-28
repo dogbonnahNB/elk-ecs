@@ -92,19 +92,19 @@ data "aws_ami" "amazon_linux_ecs" {
 }
 
 resource "aws_network_interface" "ec2-az-2a-master" {
-  subnet_id       = "${aws_subnet.public_a.id}"
+  subnet_id       = "${aws_subnet.ecs_subnet_2A.id}"
   private_ips     = ["10.10.200.4"]
   security_groups = "${data.aws_security_groups.selected.ids}"
 }
 
 resource "aws_network_interface" "ec2-az-2b-master" {
-  subnet_id       = "${aws_subnet.public_a.id}"
+  subnet_id       = "${aws_subnet.ecs_subnet_2B.id}"
   private_ips     = ["10.10.210.4"]
   security_groups = "${data.aws_security_groups.selected.ids}"
 }
 
-resource "aws_network_interface" "ec2-az-2b-master" {
-  subnet_id       = "${aws_subnet.public_a.id}"
+resource "aws_network_interface" "ec2-az-2c-master" {
+  subnet_id       = "${aws_subnet.ecs_subnet_2C.id}"
   private_ips     = ["10.10.220.4"]
   security_groups = "${data.aws_security_groups.selected.ids}"
 }
