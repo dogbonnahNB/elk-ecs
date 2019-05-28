@@ -32,9 +32,10 @@
     },
     "healthCheck": {
       "command": ["CMD", "curl -f http://localhost:9200/_cat/health"],
-      "interval": 180,
+      "interval": 60,
       "retries": 4,
-      "timeout": 10
+      "timeout": 10,
+      "startPeriod": 180
     },
     "ulimits": [
       {

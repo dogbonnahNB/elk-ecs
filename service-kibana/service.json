@@ -8,10 +8,6 @@
       {
         "containerPort": 5601,
         "hostPort": 5601
-      },
-      {
-        "containerPort": 5601,
-        "hostPort": 5601
       }
     ],
     "logConfiguration": {
@@ -24,9 +20,10 @@
     },
     "healthCheck": {
       "command": ["CMD", "curl -fs http://localhost:5601"],
-      "interval": 180,
+      "interval": 60,
       "retries": 4,
-      "timeout": 10
-    },
+      "timeout": 10,
+      "startPeriod": 180
+    }
   }
 ]
