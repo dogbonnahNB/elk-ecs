@@ -93,7 +93,7 @@ resource "aws_instance" "ecs-cluster-elasticsearch-2a" {
   subnet_id            = "${data.aws_subnet_id.ecs_subnet_2A.id}"
   private_ip             = "10.10.200.4"
   instance_type          = "${var.instance_type}"
-  vpc_security_group_ids = "${data.aws_security_groups.selected.ids}"
+  vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
   iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
   user_data              = "${file("${path.module}/user-data.sh")}"
   key_name               = "${var.key_name}"
@@ -110,7 +110,7 @@ resource "aws_instance" "ecs-cluster-elasticsearch-2b" {
   subnet_id              = "${data.aws_subnet_id.ecs_subnet_2B.id}"
   private_ip             = "10.10.210.4"
   instance_type          = "${var.instance_type}"
-  vpc_security_group_ids = "${data.aws_security_group.selected.ids}"
+  vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
   iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
   user_data              = "${file("${path.module}/user-data.sh")}"
   key_name               = "${var.key_name}"
@@ -127,7 +127,7 @@ resource "aws_instance" "ecs-cluster-elasticsearch-2c" {
   subnet_id              = "${data.aws_subnet_id.ecs_subnet_2C.id}"
   private_ip             = "10.10.220.4"
   instance_type          = "${var.instance_type}"
-  vpc_security_group_ids = "${data.aws_security_group.selected.ids}"
+  vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
   iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
   user_data              = "${file("${path.module}/user-data.sh")}"
   key_name               = "${var.key_name}"
