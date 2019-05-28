@@ -6,13 +6,11 @@ resource "aws_cloudwatch_log_group" "kibana" {
 resource "aws_ecs_task_definition" "kibana" {
   family = "kibana"
   container_definitions = "${file("service-kibana/service.json")}"
-  network_mode = "host"
 
   placement_constraints {
     type       = "memberOf"
     expression = "attribute:application =~ kibana"
   }
-
 }
 
 resource "aws_ecs_service" "kibana" {

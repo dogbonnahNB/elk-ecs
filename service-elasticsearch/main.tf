@@ -22,7 +22,6 @@ resource "aws_ecs_task_definition" "elasticsearch" {
     type       = "memberOf"
     expression = "attribute:application =~ elasticsearch"
   }
-
 }
 
 resource "aws_ecs_service" "elasticsearch" {
