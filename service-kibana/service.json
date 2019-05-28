@@ -17,6 +17,6 @@
         "awslogs-group": "kibana",
         "awslogs-stream-prefix": "fast-ecs"
       }
-    },
+    }
   }
 ]
