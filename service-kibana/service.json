@@ -10,12 +10,6 @@
         "hostPort": 5601
       }
     ],
-    "dependsOn": [
-      {
-          "containerName": "elasticsearch",
-          "condition": "HEALTHY"
-      }
-    ],
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
