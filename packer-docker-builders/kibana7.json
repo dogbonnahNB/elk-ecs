@@ -12,7 +12,6 @@
         "ENV REGION {{user `REGION`}}",
         "EXPOSE 5601",
         "WORKDIR /usr/share/kibana",
-        "CMD /usr/local/bin/kibana-docker"
       ]
     }
   ],
