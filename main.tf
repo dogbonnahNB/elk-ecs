@@ -23,38 +23,35 @@ data "aws_subnet_ids" "ecs_subnets" {
   vpc_id = "${var.vpc_id}"
 }
 
-data "aws_subnet_ids" "ecs_subnet_2A" {
-  vpc_id = "${var.vpc_id}"
-
+data "aws_subnet_id" "ecs_subnet_2A" {
+  vpc_id     = "${var.vpc_id}"
+  cidr_block = "10.10.200.0/28"
   tags = {
     Name = "ELK_Stack_2A"
   }
 }
 
-data "aws_subnet_ids" "ecs_subnet_2B" {
-  vpc_id = "${var.vpc_id}"
-
+data "aws_subnet_id" "ecs_subnet_2B" {
+  vpc_id     = "${var.vpc_id}"
+  cidr_block = "10.10.210.0/28"
   tags = {
     Name = "ELK_Stack_2B"
   }
 }
 
-data "aws_subnet_ids" "ecs_subnet_2C" {
-  vpc_id = "${var.vpc_id}"
-
+data "aws_subnet_id" "ecs_subnet_2C" {
+  vpc_id     = "${var.vpc_id}"
+  cidr_block = "10.10.220.0/28"
   tags = {
     Name = "ELK_Stack_2C"
   }
 }
 
-data "aws_vpc_security_group_ids" "selected" {
+data "aws_security_group" "ecs_sg" {
+  vpc_id = "${var.vpc_id}"
+  name   = "${var.ecs_sg}"
   tags = {
     Name   = "ECS_Cluster"
-  }
-
-  filter {
-    name   = "vpc-id"
-    values = ["${data.aws_vpc.ecs_vpc.id}"]
   }
 }
 
@@ -93,12 +90,13 @@ data "aws_ami" "amazon_linux_ecs" {
 
 resource "aws_instance" "ecs-cluster-elasticsearch-2a" {
   ami                  = "${data.aws_ami.amazon_linux_ecs.id}"
-  private_ip           = "10.10.200.4"
-  instance_type        = "${var.instance_type}"
-  vpc_security_group_ids      = "${data.aws_vpc_security_group_ids.selected.ids}"
-  iam_instance_profile = "${module.ecs-instance-policy.iam_instance_profile_id}"
-  user_data            = "${file("${path.module}/user-data.sh")}"
-  key_name             = "${var.key_name}"
+  subnet_id            = "${data.aws_subnet_id.ecs_subnet_2A.id}"
+  private_ip             = "10.10.200.4"
+  instance_type          = "${var.instance_type}"
+  vpc_security_group_ids = "${data.aws_security_groups.selected.ids}"
+  iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
+  user_data              = "${file("${path.module}/user-data.sh")}"
+  key_name               = "${var.key_name}"
 
   tags = {
     Name          = "elasticsearch-2a"
@@ -108,13 +106,14 @@ resource "aws_instance" "ecs-cluster-elasticsearch-2a" {
 }
 
 resource "aws_instance" "ecs-cluster-elasticsearch-2b" {
-  ami                  = "${data.aws_ami.amazon_linux_ecs.id}"
-  private_ip           = "10.10.210.4"
-  instance_type        = "${var.instance_type}"
-  vpc_security_group_ids      = "${data.aws_vpc_security_group_ids.selected.ids}"
-  iam_instance_profile = "${module.ecs-instance-policy.iam_instance_profile_id}"
-  user_data            = "${file("${path.module}/user-data.sh")}"
-  key_name             = "${var.key_name}"
+  ami                    = "${data.aws_ami.amazon_linux_ecs.id}"
+  subnet_id              = "${data.aws_subnet_id.ecs_subnet_2B.id}"
+  private_ip             = "10.10.210.4"
+  instance_type          = "${var.instance_type}"
+  vpc_security_group_ids = "${data.aws_security_group.selected.ids}"
+  iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
+  user_data              = "${file("${path.module}/user-data.sh")}"
+  key_name               = "${var.key_name}"
 
   tags = {
     Name          = "elasticsearch-2b"
@@ -124,13 +123,14 @@ resource "aws_instance" "ecs-cluster-elasticsearch-2b" {
 }
 
 resource "aws_instance" "ecs-cluster-elasticsearch-2c" {
-  ami                  = "${data.aws_ami.amazon_linux_ecs.id}"
-  private_ip           = "10.10.220.4"
-  instance_type        = "${var.instance_type}"
-  vpc_security_group_ids      = "${data.aws_vpc_security_group_ids.selected.ids}"
-  iam_instance_profile = "${module.ecs-instance-policy.iam_instance_profile_id}"
-  user_data            = "${file("${path.module}/user-data.sh")}"
-  key_name             = "${var.key_name}"
+  ami                    = "${data.aws_ami.amazon_linux_ecs.id}"
+  subnet_id              = "${data.aws_subnet_id.ecs_subnet_2C.id}"
+  private_ip             = "10.10.220.4"
+  instance_type          = "${var.instance_type}"
+  vpc_security_group_ids = "${data.aws_security_group.selected.ids}"
+  iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
+  user_data              = "${file("${path.module}/user-data.sh")}"
+  key_name               = "${var.key_name}"
 
   tags = {
     Name          = "elasticsearch-2c"

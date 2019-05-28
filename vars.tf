@@ -32,3 +32,8 @@ variable "key_name" {
   description = "The name of the key to access autoscaling group instances"
   default     = "accentKey"
 }
+
+variable "ecs_sg" {
+  description = "The name of the key to access autoscaling group instances"
+  default     = "ECS_Cluster"
+}
