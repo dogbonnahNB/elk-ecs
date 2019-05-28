@@ -91,43 +91,32 @@ data "aws_ami" "amazon_linux_ecs" {
   }
 }
 
-resource "aws_instance" "ecs-cluster-elasticsearch-2a" {
-  ami                  = "${data.aws_ami.amazon_linux_ecs.id}"
-  private_ip           = "10.10.200.4"
-  image_id             = "${data.aws_ami.amazon_linux_ecs.id}"
-  instance_type        = "${var.instance_type}"
-  security_groups      = "${data.aws_security_groups.selected.ids}"
-  iam_instance_profile = "${module.ecs-instance-policy.iam_instance_profile_id}"
-  user_data            = "${file("${path.module}/user-data.sh")}"
-  key_name             = "${var.key_name}"
-
-  tags = {
-    Name          = "elasticsearch-2a"
-    Environment   = "${local.environment}"
-    Cluster       = "${local.name}"
-  }
+resource "aws_network_interface" "ec2-az-2a-master" {
+  subnet_id       = "${aws_subnet.ecs_subnet_2A.id}"
+  private_ips     = ["10.10.200.4"]
+  security_groups = "${data.aws_security_groups.selected.ids}"
 }
 
-resource "aws_instance" "ecs-cluster-elasticsearch-2b" {
-  ami                  = "${data.aws_ami.amazon_linux_ecs.id}"
-  private_ip           = "10.10.210.4"
-  image_id             = "${data.aws_ami.amazon_linux_ecs.id}"
-  instance_type        = "${var.instance_type}"
-  security_groups      = "${data.aws_security_groups.selected.ids}"
-  iam_instance_profile = "${module.ecs-instance-policy.iam_instance_profile_id}"
-  user_data            = "${file("${path.module}/user-data.sh")}"
-  key_name             = "${var.key_name}"
-
-  tags = {
-    Name          = "elasticsearch-2b"
-    Environment   = "${local.environment}"
-    Cluster       = "${local.name}"
-  }
+resource "aws_network_interface" "ec2-az-2b-master" {
+  subnet_id       = "${aws_subnet.ecs_subnet_2B.id}"
+  private_ips     = ["10.10.210.4"]
+  security_groups = "${data.aws_security_groups.selected.ids}"
 }
 
-resource "aws_instance" "ecs-cluster-elasticsearch-2c" {
-  ami                  = "${data.aws_ami.amazon_linux_ecs.id}"
-  private_ip           = "10.10.220.4"
+resource "aws_network_interface" "ec2-az-2c-master" {
+  subnet_id       = "${aws_subnet.ecs_subnet_2C.id}"
+  private_ips     = ["10.10.220.4"]
+  security_groups = "${data.aws_security_groups.selected.ids}"
+}
+
+module "aws_launch_configuration" {
+  source = "terraform-aws-modules/autoscaling/aws"
+
+  name = "${local.ec2_resources_name}"
+
+  # Launch configuration
+  lc_name = "${local.ec2_resources_name}"
+
   image_id             = "${data.aws_ami.amazon_linux_ecs.id}"
   instance_type        = "${var.instance_type}"
   security_groups      = "${data.aws_security_groups.selected.ids}"
@@ -135,9 +124,25 @@ resource "aws_instance" "ecs-cluster-elasticsearch-2c" {
   user_data            = "${file("${path.module}/user-data.sh")}"
   key_name             = "${var.key_name}"
 
-  tags = {
-    Name          = "elasticsearch-2c"
-    Environment   = "${local.environment}"
-    Cluster       = "${local.name}"
-  }
+  # Auto scaling group
+  asg_name                  = "${local.ec2_resources_name}"
+  vpc_zone_identifier       = "${data.aws_subnet_ids.ecs_subnets.ids}"
+  health_check_type         = "EC2"
+  min_size                  = 1
+  max_size                  = 3
+  desired_capacity          = 3
+  wait_for_capacity_timeout = 0
+
+  tags = [
+    {
+      key                 = "Environment"
+      value               = "${local.environment}"
+      propagate_at_launch = true
+    },
+    {
+      key                 = "Cluster"
+      value               = "${local.name}"
+      propagate_at_launch = true
+    },
+  ]
 }
