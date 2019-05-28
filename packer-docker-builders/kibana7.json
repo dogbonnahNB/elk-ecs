@@ -8,12 +8,6 @@
       "type": "docker",
       "image": "elastic/kibana:7.1.0",
       "commit": true,
-      "changes": [
-        "ENV REGION {{user `REGION`}}",
-        "EXPOSE 5601",
-        "WORKDIR /usr/share/kibana",
-        "ENTRYPOINT /usr/local/bin/kibana-docker"
-      ]
     }
   ],
 
