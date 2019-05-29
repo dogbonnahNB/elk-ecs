@@ -36,7 +36,7 @@
     {
       "type": "shell",
       "inline": [
-        "rm -f /usr/share/logstash/pipeline/logstash.conf"
+        "rm -f /usr/share/logstash/pipeline/logstash.conf",
         "/bin/chown logstash:logstash config/logstash.yml",
         "/bin/chown logstash:logstash config/pipelines.yml",
         "/bin/chown logstash:logstash pipeline/applications.conf"
