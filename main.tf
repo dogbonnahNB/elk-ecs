@@ -81,6 +81,11 @@ module "kibana" {
   cluster_id = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
 }
 
+module "logstash" {
+  source     = "./service-logstash"
+  cluster_id = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
+}
+
 #----- ECS  Resources--------
 
 data "aws_ami" "amazon_linux_ecs" {
