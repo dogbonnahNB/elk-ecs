@@ -194,3 +194,54 @@ resource "aws_instance" "ecs-cluster-kibana-2c" {
     Cluster       = "${local.name}"
   }
 }
+
+resource "aws_instance" "ecs-cluster-logstash-2a" {
+  ami                  = "${data.aws_ami.amazon_linux_ecs.id}"
+  subnet_id            = "${data.aws_subnet.ecs_subnet_2A.id}"
+  private_ip             = "10.10.200.6"
+  instance_type          = "${var.instance_type}"
+  vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
+  iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
+  user_data              = "${file("${path.module}/user-data-logstash.sh")}"
+  key_name               = "${var.key_name}"
+
+  tags = {
+    Name          = "logstash-2a"
+    Environment   = "${local.environment}"
+    Cluster       = "${local.name}"
+  }
+}
+
+resource "aws_instance" "ecs-cluster-logstash-2b" {
+  ami                    = "${data.aws_ami.amazon_linux_ecs.id}"
+  subnet_id              = "${data.aws_subnet.ecs_subnet_2B.id}"
+  private_ip             = "10.10.210.6"
+  instance_type          = "${var.instance_type}"
+  vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
+  iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
+  user_data              = "${file("${path.module}/user-data-logstash.sh")}"
+  key_name               = "${var.key_name}"
+
+  tags = {
+    Name          = "logstash-2b"
+    Environment   = "${local.environment}"
+    Cluster       = "${local.name}"
+  }
+}
+
+resource "aws_instance" "ecs-cluster-logstash-2c" {
+  ami                    = "${data.aws_ami.amazon_linux_ecs.id}"
+  subnet_id              = "${data.aws_subnet.ecs_subnet_2C.id}"
+  private_ip             = "10.10.220.6"
+  instance_type          = "${var.instance_type}"
+  vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
+  iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
+  user_data              = "${file("${path.module}/user-data-logstash.sh")}"
+  key_name               = "${var.key_name}"
+
+  tags = {
+    Name          = "logstash-2c"
+    Environment   = "${local.environment}"
+    Cluster       = "${local.name}"
+  }
+}
