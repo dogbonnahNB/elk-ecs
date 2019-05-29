@@ -1,19 +1,34 @@
 #Elasticsearch config file
 
-cluster.name: "fast-cluster"
+node.master: true
+node.data: true
+node.ingest: true
+node.ml: true
+xpack.ml.enabled: true
+
+cluster.remote.connect: false
+
+cluster.initial_master_nodes:
+  - 10.10.200.4
+  - 10.10.210.4
+  - 10.10.220.4
+
+cluster.name: fast-cluster
 bootstrap.memory_lock: true
 network.bind_host: 0.0.0.0
 network.publish_host: _ec2:privateIp_
 transport.bind_host: 0.0.0.0
 transport.publish_host: _ec2:privateIp_
+
 discovery.seed_providers: ec2
 discovery:
   ec2:
-    any_group: true
-    tag.es_cluster: “prod1-elasticsearch”
-    endpoint: ec2.eu-west-2.amazonaws.com
     host_type: private_ip
-#s3.client.default.endpoint: s3.eu-west-2.amazonaws.com
+    tag.Environment: production
+    tag.Cluster: elk-cluster
+    endpoint: ec2.eu-west-2.amazonaws.com
+    availability_zones: eu-west-2a,eu-west-2b,eu-west-2c
+
 cloud.node.auto_attributes: true
 cluster.routing.allocation.awareness.attributes: aws_availability_zone
 #xpack.security.enabled: false

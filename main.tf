@@ -7,8 +7,8 @@ terraform {
 }
 
 locals {
-  name        = "fast-ecs"
-  environment = "dev"
+  name        = "elk-cluster"
+  environment = "production"
 
   # This is the convention we use to know what belongs to each other
   ec2_resources_name = "${local.name}-${local.environment}"
@@ -23,14 +23,35 @@ data "aws_subnet_ids" "ecs_subnets" {
   vpc_id = "${var.vpc_id}"
 }
 
-data "aws_security_groups" "selected" {
+data "aws_subnet" "ecs_subnet_2A" {
+  vpc_id     = "${var.vpc_id}"
+  cidr_block = "10.10.200.0/28"
+  tags = {
+    Name = "ELK_Stack_2A"
+  }
+}
+
+data "aws_subnet" "ecs_subnet_2B" {
+  vpc_id     = "${var.vpc_id}"
+  cidr_block = "10.10.210.0/28"
+  tags = {
+    Name = "ELK_Stack_2B"
+  }
+}
+
+data "aws_subnet" "ecs_subnet_2C" {
+  vpc_id     = "${var.vpc_id}"
+  cidr_block = "10.10.220.0/28"
+  tags = {
+    Name = "ELK_Stack_2C"
+  }
+}
+
+data "aws_security_group" "ecs_sg" {
+  vpc_id = "${var.vpc_id}"
+  name   = "${var.ecs_sg}"
   tags = {
     Name   = "ECS_Cluster"
-  }
-
-  filter {
-    name   = "vpc-id"
-    values = ["${data.aws_vpc.ecs_vpc.id}"]
   }
 }
 
@@ -55,6 +76,11 @@ module "elasticsearch" {
   cluster_id = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
 }
 
+module "kibana" {
+  source     = "./service-kibana"
+  cluster_id = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
+}
+
 #----- ECS  Resources--------
 
 data "aws_ami" "amazon_linux_ecs" {
@@ -67,39 +93,104 @@ data "aws_ami" "amazon_linux_ecs" {
   }
 }
 
-module "aws_launch_configuration" {
-  source = "terraform-aws-modules/autoscaling/aws"
+resource "aws_instance" "ecs-cluster-elasticsearch-2a" {
+  ami                    = "${data.aws_ami.amazon_linux_ecs.id}"
+  subnet_id              = "${data.aws_subnet.ecs_subnet_2A.id}"
+  private_ip             = "10.10.200.4"
+  instance_type          = "${var.instance_type}"
+  vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
+  iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
+  user_data              = "${file("${path.module}/user-data-elasticsearch.sh")}"
+  key_name               = "${var.key_name}"
 
-  name = "${local.ec2_resources_name}"
+  tags = {
+    Name          = "elasticsearch-2a"
+    Environment   = "${local.environment}"
+    Cluster       = "${local.name}"
+  }
+}
 
-  # Launch configuration
-  lc_name = "${local.ec2_resources_name}"
+resource "aws_instance" "ecs-cluster-elasticsearch-2b" {
+  ami                    = "${data.aws_ami.amazon_linux_ecs.id}"
+  subnet_id              = "${data.aws_subnet.ecs_subnet_2B.id}"
+  private_ip             = "10.10.210.4"
+  instance_type          = "${var.instance_type}"
+  vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
+  iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
+  user_data              = "${file("${path.module}/user-data-elasticsearch.sh")}"
+  key_name               = "${var.key_name}"
 
-  image_id             = "${data.aws_ami.amazon_linux_ecs.id}"
-  instance_type        = "${var.instance_type}"
-  security_groups      = "${data.aws_security_groups.selected.ids}"
-  iam_instance_profile = "${module.ecs-instance-policy.iam_instance_profile_id}"
-  user_data            = "${file("${path.module}/user-data.sh")}"
+  tags = {
+    Name          = "elasticsearch-2b"
+    Environment   = "${local.environment}"
+    Cluster       = "${local.name}"
+  }
+}
 
-  # Auto scaling group
-  asg_name                  = "${local.ec2_resources_name}"
-  vpc_zone_identifier       = "${data.aws_subnet_ids.ecs_subnets.ids}"
-  health_check_type         = "EC2"
-  min_size                  = 1
-  max_size                  = 3
-  desired_capacity          = 3
-  wait_for_capacity_timeout = 0
+resource "aws_instance" "ecs-cluster-elasticsearch-2c" {
+  ami                    = "${data.aws_ami.amazon_linux_ecs.id}"
+  subnet_id              = "${data.aws_subnet.ecs_subnet_2C.id}"
+  private_ip             = "10.10.220.4"
+  instance_type          = "${var.instance_type}"
+  vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
+  iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
+  user_data              = "${file("${path.module}/user-data-elasticsearch.sh")}"
+  key_name               = "${var.key_name}"
 
-  tags = [
-    {
-      key                 = "Environment"
-      value               = "${local.environment}"
-      propagate_at_launch = true
-    },
-    {
-      key                 = "Cluster"
-      value               = "${local.name}"
-      propagate_at_launch = true
-    },
-  ]
+  tags = {
+    Name          = "elasticsearch-2c"
+    Environment   = "${local.environment}"
+    Cluster       = "${local.name}"
+  }
+}
+
+resource "aws_instance" "ecs-cluster-kibana-2a" {
+  ami                  = "${data.aws_ami.amazon_linux_ecs.id}"
+  subnet_id            = "${data.aws_subnet.ecs_subnet_2A.id}"
+  private_ip             = "10.10.200.5"
+  instance_type          = "${var.instance_type}"
+  vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
+  iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
+  user_data              = "${file("${path.module}/user-data-kibana.sh")}"
+  key_name               = "${var.key_name}"
+
+  tags = {
+    Name          = "kibana-2a"
+    Environment   = "${local.environment}"
+    Cluster       = "${local.name}"
+  }
+}
+
+resource "aws_instance" "ecs-cluster-kibana-2b" {
+  ami                    = "${data.aws_ami.amazon_linux_ecs.id}"
+  subnet_id              = "${data.aws_subnet.ecs_subnet_2B.id}"
+  private_ip             = "10.10.210.5"
+  instance_type          = "${var.instance_type}"
+  vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
+  iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
+  user_data              = "${file("${path.module}/user-data-kibana.sh")}"
+  key_name               = "${var.key_name}"
+
+  tags = {
+    Name          = "kibana-2b"
+    Environment   = "${local.environment}"
+    Cluster       = "${local.name}"
+  }
+}
+
+resource "aws_instance" "ecs-cluster-kibana-2c" {
+  ami                    = "${data.aws_ami.amazon_linux_ecs.id}"
+  subnet_id              = "${data.aws_subnet.ecs_subnet_2C.id}"
+  private_ip             = "10.10.220.5"
+  instance_type          = "${var.instance_type}"
+  vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
+  iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
+  user_data              = "${file("${path.module}/user-data-kibana.sh")}"
+  key_name               = "${var.key_name}"
+
+  tags = {
+    Name          = "kibana-2c"
+    Environment   = "${local.environment}"
+    Cluster       = "${local.name}"
+  }
 }

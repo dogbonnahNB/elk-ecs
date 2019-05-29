@@ -15,6 +15,11 @@ resource "aws_ecs_task_definition" "elasticsearch" {
       autoprovision = true
     }
   }
+
+  placement_constraints {
+    type       = "memberOf"
+    expression = "attribute:application =~ elasticsearch"
+  }
 }
 
 resource "aws_ecs_service" "elasticsearch" {
