@@ -69,6 +69,28 @@ module "ecs-instance-policy" {
   policy_name = "${var.policy_name}"
 }
 
+#----- Load Balancers --------
+
+module "logstash-lb" {
+  source           = "./ecs-load_balancer"
+  vpc_id           = "${var.vpc_id}"
+  ecs_sg           = "${data.aws_security_group.ecs_sg.id}"
+  application_name = "logstash"
+  application_port = 5044
+  lb_port          = 80
+  is_internal      = false
+}
+
+module "kibana-lb" {
+  source           = "./ecs-load_balancer"
+  vpc_id           = "${var.vpc_id}"
+  ecs_sg           = "${data.aws_security_group.ecs_sg.id}"
+  application_name = "kibana"
+  application_port = 5601
+  lb_port          = 5601
+  is_internal      = false
+}
+
 #----- ECS  Services--------
 
 module "elasticsearch" {
@@ -77,13 +99,15 @@ module "elasticsearch" {
 }
 
 module "kibana" {
-  source     = "./service-kibana"
-  cluster_id = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
+  source       = "./service-kibana"
+  cluster_id   = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
+  target_group = "${module.kibana-lb.target_group_arn}"
 }
 
 module "logstash" {
   source     = "./service-logstash"
   cluster_id = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
+  target_group = "${module.logstash-lb.target_group_arn}"
 }
 
 #----- ECS  Resources--------
