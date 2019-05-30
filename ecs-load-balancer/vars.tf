@@ -1,11 +1,9 @@
-variable "vpc_id" {
+variable "subnet_ids" {
   description = "The ID of the selected precreated VPC"
-  default     = "vpc-0116e9499d2eadf31"
 }
 
-variable "ecs_sg" {
+variable "ecs_sg_id" {
   description = "The name of the key to access autoscaling group instances"
-  default     = "ECS_Cluster"
 }
 
 variable "application_name" {

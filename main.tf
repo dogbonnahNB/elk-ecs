@@ -73,7 +73,7 @@ module "ecs-instance-policy" {
 
 module "logstash-lb" {
   source           = "./ecs-load-balancer"
-  vpc_id           = "${var.vpc_id}"
+  vpc_id           = "${data.aws_subnet_ids.ecs_subnets.ids}"
   ecs_sg           = "${data.aws_security_group.ecs_sg.id}"
   application_name = "logstash"
   application_port = 5044
@@ -83,7 +83,7 @@ module "logstash-lb" {
 
 module "kibana-lb" {
   source           = "./ecs-load-balancer"
-  vpc_id           = "${var.vpc_id}"
+  subnet_ids       = "${data.aws_subnet_ids.ecs_subnets.ids}"
   ecs_sg           = "${data.aws_security_group.ecs_sg.id}"
   application_name = "kibana"
   application_port = 5601
