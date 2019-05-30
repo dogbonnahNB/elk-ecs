@@ -20,5 +20,4 @@ variable "lb_port" {
 
 variable "is_internal" {
   description = "Whether or not the load balancer is internal"
-  type = "boolean"
 }
