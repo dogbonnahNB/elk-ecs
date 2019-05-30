@@ -94,7 +94,7 @@ module "kibana-lb" {
   lb_port          = 80
   is_internal      = false
   health_check_path = "/api/kibana"
-  health_check_port = 80
+  health_check_port = 5601
 }
 
 resource "aws_lb_target_group_attachment" "lb-attach-logstash-2a" {
