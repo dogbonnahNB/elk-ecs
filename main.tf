@@ -72,7 +72,7 @@ module "ecs-instance-policy" {
 #----- Load Balancers --------
 
 module "logstash-lb" {
-  source           = "./ecs-load_balancer"
+  source           = "./ecs-load-balancer"
   vpc_id           = "${var.vpc_id}"
   ecs_sg           = "${data.aws_security_group.ecs_sg.id}"
   application_name = "logstash"
@@ -82,7 +82,7 @@ module "logstash-lb" {
 }
 
 module "kibana-lb" {
-  source           = "./ecs-load_balancer"
+  source           = "./ecs-load-balancer"
   vpc_id           = "${var.vpc_id}"
   ecs_sg           = "${data.aws_security_group.ecs_sg.id}"
   application_name = "kibana"
