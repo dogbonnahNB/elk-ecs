@@ -1,12 +1,3 @@
-data "aws_security_group" "ecs_sg" {
-  vpc_id = "${var.vpc_id}"
-  name   = "${var.ecs_sg}"
-}
-
-data "aws_subnet_ids" "ecs_subnets" {
-  vpc_id = "${var.vpc_id}"
-}
-
 resource "aws_lb_target_group" "ecs-application-lb-tg" {
   name     = "${var.application_name}-lb-tg"
   port     = "${var.application_port}"
