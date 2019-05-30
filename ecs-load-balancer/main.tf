@@ -22,7 +22,7 @@ resource "aws_lb" "ecs-application-lb" {
   security_groups    = ["${var.ecs_sg_id}"]
   subnets            = ["${var.subnet_ids}"]
 
-  enable_deletion_protection = true
+  enable_deletion_protection = false
 }
 
 resource "aws_lb_listener" "front_end" {

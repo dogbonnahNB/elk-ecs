@@ -143,11 +143,13 @@ module "elasticsearch" {
 module "kibana" {
   source       = "./service-kibana"
   cluster_id   = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
+  depends_on   = ["${module.elasticsearch}"]
 }
 
 module "logstash" {
   source     = "./service-logstash"
   cluster_id = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
+  depends_on   = ["${module.elasticsearch}"]
 }
 
 #----- ECS  Resources--------
