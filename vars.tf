@@ -37,3 +37,13 @@ variable "ecs_sg" {
   description = "The name of the key to access autoscaling group instances"
   default     = "ECS_Cluster"
 }
+
+variable "logstash_port" {
+  description = "Port number logstash application is listening on instances"
+  default     = 5044
+}
+
+variable "kibana_port" {
+  description = "Port number logstash application is listening on instances"
+  default     = 5601
+}

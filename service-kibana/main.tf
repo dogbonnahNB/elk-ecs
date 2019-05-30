@@ -19,7 +19,6 @@ resource "aws_ecs_service" "kibana" {
   task_definition = "${aws_ecs_task_definition.kibana.arn}"
 
   desired_count = 3
-
   deployment_maximum_percent         = 100
   deployment_minimum_healthy_percent = 66
 }

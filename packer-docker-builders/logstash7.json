@@ -1,0 +1,72 @@
+{
+  "variables": {
+    "REGION": "eu-west-2"
+  },
+
+  "builders": [
+    {
+      "type": "docker",
+      "image": "elastic/logstash:7.1.0",
+      "commit": true,
+      "changes": [
+        "ENV REGION {{user `REGION`}}",
+        "EXPOSE 9600 5044",
+        "WORKDIR /usr/share/logstash",
+        "ENTRYPOINT [ \"/usr/local/bin/docker-entrypoint\" ]"
+      ]
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "config/logstash.yml",
+      "destination": "/usr/share/logstash/config/logstash.yml"
+    },
+    {
+      "type": "file",
+      "source": "config/pipelines.yml",
+      "destination": "/usr/share/logstash/config/pipelines.yml"
+    },
+    {
+      "type": "file",
+      "source": "config/applications.conf",
+      "destination": "/usr/share/logstash/pipeline/applications.conf"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "rm -f /usr/share/logstash/pipeline/logstash.conf",
+        "/bin/chown logstash:logstash config/logstash.yml",
+        "/bin/chown logstash:logstash config/pipelines.yml",
+        "/bin/chown logstash:logstash pipeline/applications.conf"
+      ]
+    }
+  ],
+
+  "post-processors": [
+    [
+      {
+        "type": "docker-tag",
+        "repository": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/logstash",
+        "tag": "accent-7.1.0-0"
+      },
+      {
+        "type": "docker-push",
+        "ecr_login": true,
+        "login_server": "https://217554036865.dkr.ecr.eu-west-2.amazonaws.com/"
+      },
+      {
+        "type": "docker-tag",
+        "repository": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/logstash",
+        "tag": "latest"
+      },
+      {
+        "type": "docker-push",
+        "ecr_login": true,
+        "login_server": "https://217554036865.dkr.ecr.eu-west-2.amazonaws.com/"
+      }
+    ]
+  ]
+
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "logstash",
+    "image": "217554036865.dkr.ecr.eu-west-2.amazonaws.com/accenture/logstash:latest",
+    "memory": 1024,
+    "interactive": true,
+    "portMappings": [
+      {
+        "containerPort": 5044,
+        "hostPort": 5044
+      },
+      {
+        "containerPort": 9600,
+        "hostPort": 9600
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-region": "eu-west-2",
+        "awslogs-group": "logstash",
+        "awslogs-stream-prefix": "fast-ecs"
+      }
+    }
+  }
+]

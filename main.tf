@@ -69,6 +69,70 @@ module "ecs-instance-policy" {
   policy_name = "${var.policy_name}"
 }
 
+#----- Load Balancers --------
+
+module "logstash-lb" {
+  source           = "./ecs-load-balancer"
+  vpc_id           = "${var.vpc_id}"
+  subnet_ids       = "${data.aws_subnet_ids.ecs_subnets.ids}"
+  ecs_sg_id        = "${data.aws_security_group.ecs_sg.id}"
+  application_name = "logstash"
+  application_port = 5044
+  lb_port          = 5044
+  is_internal      = false
+  health_check_path = "/?pretty"
+  health_check_port = 9600
+}
+
+module "kibana-lb" {
+  source           = "./ecs-load-balancer"
+  vpc_id           = "${var.vpc_id}"
+  subnet_ids       = "${data.aws_subnet_ids.ecs_subnets.ids}"
+  ecs_sg_id        = "${data.aws_security_group.ecs_sg.id}"
+  application_name = "kibana"
+  application_port = 5601
+  lb_port          = 80
+  is_internal      = false
+  health_check_path = "/app/kibana"
+  health_check_port = 5601
+}
+
+resource "aws_lb_target_group_attachment" "lb-attach-logstash-2a" {
+  target_group_arn = "${module.logstash-lb.target_group_arn}"
+  target_id        = "${aws_instance.ecs-cluster-logstash-2a.id}"
+  port             = "${var.logstash_port}"
+}
+
+resource "aws_lb_target_group_attachment" "lb-attach-logstash-2b" {
+  target_group_arn = "${module.logstash-lb.target_group_arn}"
+  target_id        = "${aws_instance.ecs-cluster-logstash-2b.id}"
+  port             = "${var.logstash_port}"
+}
+
+resource "aws_lb_target_group_attachment" "lb-attach-logstash-2c" {
+  target_group_arn = "${module.logstash-lb.target_group_arn}"
+  target_id        = "${aws_instance.ecs-cluster-logstash-2c.id}"
+  port             = "${var.logstash_port}"
+}
+
+resource "aws_lb_target_group_attachment" "lb-attach-kibana-2a" {
+  target_group_arn = "${module.kibana-lb.target_group_arn}"
+  target_id        = "${aws_instance.ecs-cluster-kibana-2a.id}"
+  port             = "${var.kibana_port}"
+}
+
+resource "aws_lb_target_group_attachment" "lb-attach-kibana-2b" {
+  target_group_arn = "${module.kibana-lb.target_group_arn}"
+  target_id        = "${aws_instance.ecs-cluster-kibana-2b.id}"
+  port             = "${var.kibana_port}"
+}
+
+resource "aws_lb_target_group_attachment" "lb-attach-kibana-2c" {
+  target_group_arn = "${module.kibana-lb.target_group_arn}"
+  target_id        = "${aws_instance.ecs-cluster-kibana-2c.id}"
+  port             = "${var.kibana_port}"
+}
+
 #----- ECS  Services--------
 
 module "elasticsearch" {
@@ -77,7 +141,12 @@ module "elasticsearch" {
 }
 
 module "kibana" {
-  source     = "./service-kibana"
+  source       = "./service-kibana"
+  cluster_id   = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
+}
+
+module "logstash" {
+  source     = "./service-logstash"
   cluster_id = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
 }
 
@@ -190,6 +259,57 @@ resource "aws_instance" "ecs-cluster-kibana-2c" {
 
   tags = {
     Name          = "kibana-2c"
+    Environment   = "${local.environment}"
+    Cluster       = "${local.name}"
+  }
+}
+
+resource "aws_instance" "ecs-cluster-logstash-2a" {
+  ami                  = "${data.aws_ami.amazon_linux_ecs.id}"
+  subnet_id            = "${data.aws_subnet.ecs_subnet_2A.id}"
+  private_ip             = "10.10.200.6"
+  instance_type          = "${var.instance_type}"
+  vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
+  iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
+  user_data              = "${file("${path.module}/user-data-logstash.sh")}"
+  key_name               = "${var.key_name}"
+
+  tags = {
+    Name          = "logstash-2a"
+    Environment   = "${local.environment}"
+    Cluster       = "${local.name}"
+  }
+}
+
+resource "aws_instance" "ecs-cluster-logstash-2b" {
+  ami                    = "${data.aws_ami.amazon_linux_ecs.id}"
+  subnet_id              = "${data.aws_subnet.ecs_subnet_2B.id}"
+  private_ip             = "10.10.210.6"
+  instance_type          = "${var.instance_type}"
+  vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
+  iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
+  user_data              = "${file("${path.module}/user-data-logstash.sh")}"
+  key_name               = "${var.key_name}"
+
+  tags = {
+    Name          = "logstash-2b"
+    Environment   = "${local.environment}"
+    Cluster       = "${local.name}"
+  }
+}
+
+resource "aws_instance" "ecs-cluster-logstash-2c" {
+  ami                    = "${data.aws_ami.amazon_linux_ecs.id}"
+  subnet_id              = "${data.aws_subnet.ecs_subnet_2C.id}"
+  private_ip             = "10.10.220.6"
+  instance_type          = "${var.instance_type}"
+  vpc_security_group_ids = ["${data.aws_security_group.ecs_sg.id}"]
+  iam_instance_profile   = "${module.ecs-instance-policy.iam_instance_profile_id}"
+  user_data              = "${file("${path.module}/user-data-logstash.sh")}"
+  key_name               = "${var.key_name}"
+
+  tags = {
+    Name          = "logstash-2c"
     Environment   = "${local.environment}"
     Cluster       = "${local.name}"
   }
