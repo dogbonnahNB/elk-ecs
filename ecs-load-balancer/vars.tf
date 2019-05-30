@@ -1,9 +1,11 @@
 variable "vpc_id" {
   description = "The ID of the selected precreated VPC"
+  default     = "vpc-0116e9499d2eadf31"
 }
 
 variable "ecs_sg" {
-  description = "The security group to be assigned to the ECS cluster"
+  description = "The name of the key to access autoscaling group instances"
+  default     = "ECS_Cluster"
 }
 
 variable "application_name" {
