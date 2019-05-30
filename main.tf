@@ -78,8 +78,10 @@ module "logstash-lb" {
   ecs_sg_id        = "${data.aws_security_group.ecs_sg.id}"
   application_name = "logstash"
   application_port = 5044
-  lb_port          = 80
+  lb_port          = 5044
   is_internal      = false
+  health_check_path = "/?pretty"
+  health_check_port = 9600
 }
 
 module "kibana-lb" {
@@ -89,8 +91,10 @@ module "kibana-lb" {
   ecs_sg_id        = "${data.aws_security_group.ecs_sg.id}"
   application_name = "kibana"
   application_port = 5601
-  lb_port          = 5601
+  lb_port          = 80
   is_internal      = false
+  health_check_path = "/api/kibana"
+  health_check_port = 80
 }
 
 resource "aws_lb_target_group_attachment" "lb-attach-logstash-2a" {

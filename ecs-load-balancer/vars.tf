@@ -26,3 +26,11 @@ variable "lb_port" {
 variable "is_internal" {
   description = "Whether or not the load balancer is internal"
 }
+
+variable "health_check_path" {
+  description = "Path for health check"
+}
+
+variable "health_check_port" {
+  description = "Port for health check"
+}
