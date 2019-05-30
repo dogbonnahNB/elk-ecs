@@ -4,6 +4,7 @@ variable "vpc_id" {
 
 variable "subnet_ids" {
   description = "The ID of the subnets to apply the load balancer to"
+  type        = "list"
 }
 
 variable "ecs_sg_id" {
