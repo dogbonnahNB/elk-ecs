@@ -93,6 +93,42 @@ module "kibana-lb" {
   is_internal      = false
 }
 
+resource "aws_lb_target_group_attachment" "lb-attach-logstash-2a" {
+  target_group_arn = "${module.logstash-lb.target_group_arn}"
+  target_id        = "${aws_instance.ecs-cluster-logstash-2a.id}"
+  port             = "${var.logstash_port}"
+}
+
+resource "aws_lb_target_group_attachment" "lb-attach-logstash-2b" {
+  target_group_arn = "${module.logstash-lb.target_group_arn}"
+  target_id        = "${aws_instance.ecs-cluster-logstash-2b.id}"
+  port             = "${var.logstash_port}"
+}
+
+resource "aws_lb_target_group_attachment" "lb-attach-logstash-2c" {
+  target_group_arn = "${module.logstash-lb.target_group_arn}"
+  target_id        = "${aws_instance.ecs-cluster-logstash-2c.id}"
+  port             = "${var.logstash_port}"
+}
+
+resource "aws_lb_target_group_attachment" "lb-attach-kibana-2a" {
+  target_group_arn = "${module.kibana-lb.target_group_arn}"
+  target_id        = "${aws_instance.ecs-cluster-kibana-2a.id}"
+  port             = "${var.kibana_port}"
+}
+
+resource "aws_lb_target_group_attachment" "lb-attach-kibana-2b" {
+  target_group_arn = "${module.kibana-lb.target_group_arn}"
+  target_id        = "${aws_instance.ecs-cluster-kibana-2b.id}"
+  port             = "${var.kibana_port}"
+}
+
+resource "aws_lb_target_group_attachment" "lb-attach-kibana-2c" {
+  target_group_arn = "${module.kibana-lb.target_group_arn}"
+  target_id        = "${aws_instance.ecs-cluster-kibana-2c.id}"
+  port             = "${var.kibana_port}"
+}
+
 #----- ECS  Services--------
 
 module "elasticsearch" {
@@ -103,13 +139,11 @@ module "elasticsearch" {
 module "kibana" {
   source       = "./service-kibana"
   cluster_id   = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
-  target_group = "${module.kibana-lb.target_group_arn}"
 }
 
 module "logstash" {
   source     = "./service-logstash"
   cluster_id = "${element(concat(aws_ecs_cluster.cluster.*.id, list("")), 0)}"
-  target_group = "${module.logstash-lb.target_group_arn}"
 }
 
 #----- ECS  Resources--------

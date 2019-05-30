@@ -20,12 +20,6 @@ resource "aws_ecs_service" "logstash" {
 
   desired_count = 3
 
-  load_balancer {
-    target_group_arn = "${var.target_group}"
-    container_name   = "logstash"
-    container_port   = "5044"
-  }
-
   deployment_maximum_percent         = 100
   deployment_minimum_healthy_percent = 66
 }

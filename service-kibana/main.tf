@@ -19,13 +19,6 @@ resource "aws_ecs_service" "kibana" {
   task_definition = "${aws_ecs_task_definition.kibana.arn}"
 
   desired_count = 3
-
-  load_balancer {
-    target_group_arn = "${var.target_group}"
-    container_name   = "kibana"
-    container_port   = "5601"
-  }
-
   deployment_maximum_percent         = 100
   deployment_minimum_healthy_percent = 66
 }
