@@ -93,7 +93,7 @@ module "kibana-lb" {
   application_port = 5601
   lb_port          = 80
   is_internal      = false
-  health_check_path = "/api/kibana"
+  health_check_path = "/app/kibana"
   health_check_port = 5601
 }
 
