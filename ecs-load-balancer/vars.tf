@@ -1,5 +1,9 @@
-variable "subnet_ids" {
+variable "vpc_id" {
   description = "The ID of the selected precreated VPC"
+}
+
+variable "subnet_ids" {
+  description = "The ID of the subnets to apply the load balancer to"
 }
 
 variable "ecs_sg_id" {
